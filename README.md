@@ -7,7 +7,7 @@ git clone https://github.com/PetrDvoracek/react-firebase-auth.git
 git cd react-firebase-auth
 touch .env
 ```
-`.env` folder holds properties neccesary for operations with firebase API. The structure is following
+`.env` folder holds variables neccesary for operations with firebase API. The structure is following
 ```
 REACT_APP_API_KEY=***apiKey***
 REACT_APP_AUTH_DOMAIN=***projectId***.firebaseapp.com
