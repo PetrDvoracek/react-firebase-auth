@@ -1,10 +1,5 @@
 import React from "react";
-import app from "./base";
-
-const signOut = () => {
-  app.auth().signOut();
-  console.log("Signed Out");
-};
+import app from "../config/firebase";
 
 const Home = () => {
   return (
