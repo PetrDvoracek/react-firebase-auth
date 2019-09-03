@@ -18,4 +18,5 @@ REACT_APP_MESSAGING_SENDER_ID=***messagingSenderId***
 REACT_APP_ID=***appId** 
 ```
 > DO NOT STORE `.env` IN GIT REPO! It contains secret informations.
+
 This is all you have to do to use the template. run `npm install` and `npm start`, go on `http://localhost:3000` in your browser.
