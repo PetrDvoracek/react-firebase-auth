@@ -9,21 +9,22 @@ const { Title, Text } = Typography;
 
 const SignUpBase = props => {
   const [confirmDirty, setConfirmDirty] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = useCallback(
     async event => {
       event.preventDefault();
-      const { email, passwordFirst, passwordSecond } = event.target.elements;
-      if (passwordFirst.value !== passwordSecond.value) {
-        alert("passwords are not same!");
-        return;
-      }
+      const { email, passwordFirst } = event.target.elements;
       try {
+        setLoading(true);
         await app
           .auth()
           .createUserWithEmailAndPassword(email.value, passwordFirst.value);
         props.history.push("/");
       } catch (error) {
         alert(error);
+      } finally {
+        setLoading(false);
       }
     },
     [props.history]
@@ -57,7 +58,11 @@ const SignUpBase = props => {
 
   return (
     <Form className="login-form" onSubmit={handleSubmit}>
-      <Form.Item label="E-mail">
+      <div className="login-form-title">
+        <Title>EquipPex</Title>
+        <Text disabled>There is always better solution.</Text>
+      </div>
+      <Form.Item>
         {getFieldDecorator("email", {
           rules: [
             {
@@ -69,9 +74,15 @@ const SignUpBase = props => {
               message: "Please input your E-mail!"
             }
           ]
-        })(<Input />)}
+        })(
+          <Input
+            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+            placeholder="E-mail"
+            name="email"
+          />
+        )}
       </Form.Item>
-      <Form.Item label="Password" hasFeedback>
+      <Form.Item hasFeedback>
         {getFieldDecorator("password", {
           rules: [
             {
@@ -82,9 +93,15 @@ const SignUpBase = props => {
               validator: validateToNextPassword
             }
           ]
-        })(<Input.Password />)}
+        })(
+          <Input.Password
+            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+            placeholder="Password"
+            name="passwordFirst"
+          />
+        )}
       </Form.Item>
-      <Form.Item label="Confirm Password" hasFeedback>
+      <Form.Item hasFeedback>
         {getFieldDecorator("confirm", {
           rules: [
             {
@@ -95,11 +112,17 @@ const SignUpBase = props => {
               validator: compareToFirstPassword
             }
           ]
-        })(<Input.Password onBlur={handleConfirmBlur} />)}
+        })(
+          <Input.Password
+            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+            placeholder="Confirm Password"
+            onBlur={handleConfirmBlur}
+          />
+        )}
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" className="login-form-button">
           Register
         </Button>
       </Form.Item>
