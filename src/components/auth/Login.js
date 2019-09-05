@@ -4,6 +4,8 @@ import { withRouter, Redirect } from 'react-router';
 import app from '../../config/firebase';
 import { AuthContext } from './AuthContext';
 import { Typography, Form, Icon, Input, Button, Checkbox, Spin } from 'antd';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 const { Title, Text } = Typography;
 
 const Login = ({ history }) => {
@@ -13,18 +15,36 @@ const Login = ({ history }) => {
   const handleLogin = useCallback(
     async event => {
       event.preventDefault();
-      const { email, password } = event.target.elements;
-      try {
-        setLoading(true);
-        await app
-          .auth()
-          .signInWithEmailAndPassword(email.value, password.value);
-        history.push('/');
-      } catch (error) {
-        setMessage(error.message);
-      } finally {
-        setLoading(false);
-      }
+      const { email, password, rememberUser } = event.target.elements;
+      const firebasePersistence = (rememberUser.checked) ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION;
+
+      app.auth().setPersistence(firebasePersistence)
+        .then(function () {
+          setLoading(true);
+          return app.auth().signInWithEmailAndPassword(email.value, password.value);
+        })
+        .then(function () {
+          history.push('/home');
+        })
+        .catch(function (error) {
+          setMessage(error.message);
+
+        }).finally(function () {
+          setLoading(false);
+        });
+
+      // try {
+      //   setLoading(true);
+      //   app.auth().setPersistence(app.auth.Auth.Persistence.SESSION);
+      //   await app
+      //     .auth()
+      //     .signInWithEmailAndPassword(email.value, password.value);
+      //   history.push('/');
+      // } catch (error) {
+      //   setMessage(error.message);
+      // } finally {
+      //   setLoading(false);
+      // }
     },
     [history]
   );
@@ -57,7 +77,7 @@ const Login = ({ history }) => {
         />
       </Form.Item>
       <Form.Item>
-        <Checkbox>Remember me</Checkbox>
+        <Checkbox name="rememberUser">Remember me</Checkbox>
         <a className="login-form-forgot" href="/forgot-password">
           Forgot password
         </a>
