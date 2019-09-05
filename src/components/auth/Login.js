@@ -1,13 +1,13 @@
-import React, { useCallback, useContext, useState } from "react";
-import "./Login.css";
-import { withRouter, Redirect } from "react-router";
-import app from "../../config/firebase";
-import { AuthContext } from "./AuthContext";
-import { Typography, Form, Icon, Input, Button, Checkbox, Spin } from "antd";
+import React, { useCallback, useContext, useState } from 'react';
+import './Login.css';
+import { withRouter, Redirect } from 'react-router';
+import app from '../../config/firebase';
+import { AuthContext } from './AuthContext';
+import { Typography, Form, Icon, Input, Button, Checkbox, Spin } from 'antd';
 const { Title, Text } = Typography;
 
 const Login = ({ history }) => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleLogin = useCallback(
@@ -19,7 +19,7 @@ const Login = ({ history }) => {
         await app
           .auth()
           .signInWithEmailAndPassword(email.value, password.value);
-        history.push("/");
+        history.push('/');
       } catch (error) {
         setMessage(error.message);
       } finally {
@@ -32,7 +32,7 @@ const Login = ({ history }) => {
   const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
-    return <Redirect to="/" />;
+    return <Redirect to="/home" />;
   }
 
   return (
@@ -43,14 +43,14 @@ const Login = ({ history }) => {
       </div>
       <Form.Item>
         <Input
-          prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+          prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
           placeholder="Username"
           name="email"
         />
       </Form.Item>
       <Form.Item>
         <Input
-          prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+          prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
           type="password"
           placeholder="Password"
           name="password"
