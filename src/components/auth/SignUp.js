@@ -14,17 +14,21 @@ const SignUpBase = props => {
   const handleSubmit = useCallback(
     async event => {
       event.preventDefault();
-      const { email, passwordFirst } = event.target.elements;
-      try {
-        setLoading(true);
-        await app
-          .auth()
-          .createUserWithEmailAndPassword(email.value, passwordFirst.value);
-        props.history.push("/");
-      } catch (error) {
-        alert(error);
-      } finally {
-        setLoading(false);
+      const { email, passwordFirst, PasswordSecond } = event.target.elements;
+      if (passwordFirst.value === PasswordSecond.value) {
+        try {
+          setLoading(true);
+          await app
+            .auth()
+            .createUserWithEmailAndPassword(email.value, passwordFirst.value);
+          props.history.push("/");
+        } catch (error) {
+          alert(error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        alert("Please confirm your password!");
       }
     },
     [props.history]
@@ -125,6 +129,7 @@ const SignUpBase = props => {
         <Button type="primary" htmlType="submit" className="login-form-button">
           Register
         </Button>
+        Do you already have an account? <a href="/login">log in!</a>
       </Form.Item>
     </Form>
   );
