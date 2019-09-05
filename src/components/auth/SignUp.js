@@ -1,40 +1,153 @@
-import React, { useCallback } from "react";
-import { withRouter } from "react-router";
+import React, { useCallback, useContext, useState } from "react";
+import { withRouter, Redirect } from "react-router";
 import app from "../../config/firebase";
+import { Typography, Form, Icon, Input, Button, Spin } from "antd";
+import { AuthContext } from "./AuthContext";
+import "./Login.css";
 
-const SignUp = ({ history }) => {
-  const handleSignUp = useCallback(
+const { Title, Text } = Typography;
+
+const SignUpBase = props => {
+  const [confirmDirty, setConfirmDirty] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = useCallback(
     async event => {
       event.preventDefault();
-      const { email, password } = event.target.elements;
-      try {
-        await app
-          .auth()
-          .createUserWithEmailAndPassword(email.value, password.value);
-        history.push("/");
-      } catch (error) {
-        alert(error);
+      const { email, passwordFirst, passwordSecond } = event.target.elements;
+      if (passwordFirst.value === passwordSecond.value) {
+        try {
+          setLoading(true);
+          await app
+            .auth()
+            .createUserWithEmailAndPassword(email.value, passwordFirst.value);
+          props.history.push("/");
+        } catch (error) {
+          setMessage(error.message);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setMessage("Please confirm your password!");
       }
     },
-    [history]
+    [props.history]
   );
 
+  const validateToNextPassword = (rule, value, callback) => {
+    const { form } = props;
+    if (value && confirmDirty) {
+      form.validateFields(["confirm"], { force: true });
+    }
+    callback();
+  };
+  const compareToFirstPassword = (rule, value, callback) => {
+    const { form } = props;
+    if (value && value !== form.getFieldValue("password")) {
+      callback("Two passwords that you enter is inconsistent!");
+    } else {
+      callback();
+    }
+  };
+
+  const handleConfirmBlur = e => {
+    const { value } = e.target;
+    setConfirmDirty({ confirmDirty: confirmDirty || !!value });
+  };
+  const { currentUser } = useContext(AuthContext);
+  if (currentUser) {
+    return <Redirect to="/" />;
+  }
+  const { getFieldDecorator } = props.form;
+
   return (
-    <div>
-      <h1>Sign up</h1>
-      <form onSubmit={handleSignUp}>
-        <label>
-          Email
-          <input name="email" type="email" placeholder="Email" />
-        </label>
-        <label>
-          Password
-          <input name="password" type="password" placeholder="Password" />
-        </label>
-        <button type="submit">Sign Up</button>
-      </form>
-    </div>
+    <Form className="login-form" onSubmit={handleSubmit}>
+      <div className="login-form-title">
+        <Title>EquipPex</Title>
+        <Text disabled>There is always better solution.</Text>
+      </div>
+      <Form.Item>
+        {getFieldDecorator("email", {
+          rules: [
+            {
+              type: "email",
+              message: "The input is not valid E-mail!"
+            },
+            {
+              required: true,
+              message: "Please input your E-mail!"
+            }
+          ]
+        })(
+          <Input
+            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+            placeholder="E-mail"
+            name="email"
+          />
+        )}
+      </Form.Item>
+      <Form.Item hasFeedback>
+        {getFieldDecorator("password", {
+          rules: [
+            {
+              required: true,
+              message: "Please input your password!"
+            },
+            {
+              validator: validateToNextPassword
+            }
+          ]
+        })(
+          <Input.Password
+            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+            placeholder="Password"
+            name="passwordFirst"
+          />
+        )}
+      </Form.Item>
+      <Form.Item hasFeedback>
+        {getFieldDecorator("confirm", {
+          rules: [
+            {
+              required: true,
+              message: "Please confirm your password!"
+            },
+            {
+              validator: compareToFirstPassword
+            }
+          ]
+        })(
+          <Input.Password
+            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+            placeholder="Confirm Password"
+            onBlur={handleConfirmBlur}
+            name="passwordSecond"
+          />
+        )}
+      </Form.Item>
+
+      <Form.Item>
+        <Spin spinning={loading}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="login-form-button"
+          >
+            Register
+          </Button>
+        </Spin>
+        Do you already have an account? <a href="/login">Sign In!</a>
+      </Form.Item>
+      <Form.Item>
+        <div className="login-form-message">
+          <Text type="danger">{message}</Text>
+        </div>
+      </Form.Item>
+    </Form>
   );
 };
+
+const SignUp = Form.create({ name: "register" })(SignUpBase);
 
 export default withRouter(SignUp);
