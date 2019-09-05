@@ -1,23 +1,29 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import "./Login.css";
 import { withRouter, Redirect } from "react-router";
 import app from "../../config/firebase";
 import { AuthContext } from "./AuthContext";
-import { Typography, Form, Icon, Input, Button, Checkbox } from "antd";
+import { Typography, Form, Icon, Input, Button, Checkbox, Spin } from "antd";
 const { Title, Text } = Typography;
 
 const Login = ({ history }) => {
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const handleLogin = useCallback(
     async event => {
       event.preventDefault();
       const { email, password } = event.target.elements;
       try {
+        setLoading(true);
         await app
           .auth()
           .signInWithEmailAndPassword(email.value, password.value);
         history.push("/");
       } catch (error) {
-        alert(error);
+        setMessage(error.message);
+      } finally {
+        setLoading(false);
       }
     },
     [history]
@@ -55,10 +61,21 @@ const Login = ({ history }) => {
         <a className="login-form-forgot" href="/forgot-password">
           Forgot password
         </a>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          Log in
-        </Button>
+        <Spin spinning={loading}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="login-form-button"
+          >
+            Log in
+          </Button>
+        </Spin>
         Or <a href="/sign-up">register now!</a>
+      </Form.Item>
+      <Form.Item>
+        <div className="login-form-message">
+          <Text type="danger">{message}</Text>
+        </div>
       </Form.Item>
     </Form>
   );

@@ -1,20 +1,26 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { withRouter, Redirect } from "react-router";
 import app from "../../config/firebase";
 import { AuthContext } from "./AuthContext";
-import { Typography, Form, Icon, Input, Button, Checkbox } from "antd";
+import { Typography, Form, Icon, Input, Button, Checkbox, message } from "antd";
+import "./Login.css";
 const { Title, Text } = Typography;
 
 const ForgotPasswordBase = props => {
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleSubmit = useCallback(
     async event => {
       event.preventDefault();
       const { email } = event.target.elements;
       try {
+        setLoading(true);
         await app.auth().sendPasswordResetEmail(email.value);
         props.history.push("/");
       } catch (error) {
-        alert(error);
+        setMessage(error.message);
+      } finally {
+        setLoading(false);
       }
     },
     [props.history]
@@ -56,6 +62,12 @@ const ForgotPasswordBase = props => {
         <Button type="primary" htmlType="submit" className="login-form-button">
           Reset Password
         </Button>
+        Or <a href="/login">Sign In</a>
+      </Form.Item>
+      <Form.Item>
+        <div className="login-form-message">
+          <Text type="danger">{message}</Text>
+        </div>
       </Form.Item>
     </Form>
   );

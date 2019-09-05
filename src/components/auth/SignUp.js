@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useState } from "react";
 import { withRouter, Redirect } from "react-router";
 import app from "../../config/firebase";
-import { Typography, Form, Icon, Input, Button } from "antd";
+import { Typography, Form, Icon, Input, Button, Spin } from "antd";
 import { AuthContext } from "./AuthContext";
 import "./Login.css";
 
@@ -10,12 +10,13 @@ const { Title, Text } = Typography;
 const SignUpBase = props => {
   const [confirmDirty, setConfirmDirty] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleSubmit = useCallback(
     async event => {
       event.preventDefault();
-      const { email, passwordFirst, PasswordSecond } = event.target.elements;
-      if (passwordFirst.value === PasswordSecond.value) {
+      const { email, passwordFirst, passwordSecond } = event.target.elements;
+      if (passwordFirst.value === passwordSecond.value) {
         try {
           setLoading(true);
           await app
@@ -23,12 +24,12 @@ const SignUpBase = props => {
             .createUserWithEmailAndPassword(email.value, passwordFirst.value);
           props.history.push("/");
         } catch (error) {
-          alert(error);
+          setMessage(error.message);
         } finally {
           setLoading(false);
         }
       } else {
-        alert("Please confirm your password!");
+        setMessage("Please confirm your password!");
       }
     },
     [props.history]
@@ -121,15 +122,27 @@ const SignUpBase = props => {
             prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
             placeholder="Confirm Password"
             onBlur={handleConfirmBlur}
+            name="passwordSecond"
           />
         )}
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          Register
-        </Button>
-        Do you already have an account? <a href="/login">log in!</a>
+        <Spin spinning={loading}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="login-form-button"
+          >
+            Register
+          </Button>
+        </Spin>
+        Do you already have an account? <a href="/login">Sign In!</a>
+      </Form.Item>
+      <Form.Item>
+        <div className="login-form-message">
+          <Text type="danger">{message}</Text>
+        </div>
       </Form.Item>
     </Form>
   );
