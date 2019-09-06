@@ -3,8 +3,7 @@ This project provides simple authentication and authentication template based on
 ## Get Started
 clone repo and put `.env` folder inside the root of the clonned repo.
 ```
-git clone https://github.com/PetrDvoracek/react-firebase-auth.git
-git cd react-firebase-auth
+git cd equippex
 touch .env
 ```
 `.env` folder holds variables neccesary for operations with firebase API. The structure is following

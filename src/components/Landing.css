@@ -1,0 +1,14 @@
+.landing {
+    background-color:  white;
+    text-align: center    
+}
+  .landing-header-heading {
+        text-align: center;
+        vertical-align: middle;
+        padding: 1.8em 0em 0em 0em
+  }
+  .landing-header-clever-text {
+    text-align: center;
+    vertical-align: middle;
+    padding: 1.8em 0em 0em 0em
+  }
