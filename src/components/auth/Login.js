@@ -81,15 +81,14 @@ const Login = ({ history }) => {
         <a className="login-form-forgot" href="/forgot-password">
           Forgot password
         </a>
-        <Spin spinning={loading}>
           <Button
+            loading={loading}
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
             Log in
           </Button>
-        </Spin>
         Or <a href="/sign-up">register now!</a>
       </Form.Item>
       <Form.Item>
