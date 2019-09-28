@@ -1,16 +1,16 @@
-import React, { useCallback, useContext, useState } from "react";
-import { withRouter, Redirect } from "react-router";
-import app from "../../config/firebase";
-import { Typography, Form, Icon, Input, Button, Spin } from "antd";
-import { AuthContext } from "./AuthContext";
-import "./Login.css";
+import React, { useCallback, useContext, useState } from 'react';
+import { withRouter, Redirect } from 'react-router';
+import app from '../../config/firebase';
+import { Typography, Form, Icon, Input, Button, Spin } from 'antd';
+import { AuthContext } from './AuthContext';
+import './Login.css';
 
 const { Title, Text } = Typography;
 
 const SignUpBase = props => {
   const [confirmDirty, setConfirmDirty] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   const handleSubmit = useCallback(
     async event => {
@@ -22,14 +22,14 @@ const SignUpBase = props => {
           await app
             .auth()
             .createUserWithEmailAndPassword(email.value, passwordFirst.value);
-          props.history.push("/");
+          props.history.push('/');
         } catch (error) {
           setMessage(error.message);
         } finally {
           setLoading(false);
         }
       } else {
-        setMessage("Please confirm your password!");
+        setMessage('Please confirm your password!');
       }
     },
     [props.history]
@@ -38,14 +38,14 @@ const SignUpBase = props => {
   const validateToNextPassword = (rule, value, callback) => {
     const { form } = props;
     if (value && confirmDirty) {
-      form.validateFields(["confirm"], { force: true });
+      form.validateFields(['confirm'], { force: true });
     }
     callback();
   };
   const compareToFirstPassword = (rule, value, callback) => {
     const { form } = props;
-    if (value && value !== form.getFieldValue("password")) {
-      callback("Two passwords that you enter is inconsistent!");
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Two passwords that you enter is inconsistent!');
     } else {
       callback();
     }
@@ -57,7 +57,7 @@ const SignUpBase = props => {
   };
   const { currentUser } = useContext(AuthContext);
   if (currentUser) {
-    return <Redirect to="/" />;
+    return <Redirect to="/home" />;
   }
   const { getFieldDecorator } = props.form;
 
@@ -68,31 +68,31 @@ const SignUpBase = props => {
         <Text disabled>There is always better solution.</Text>
       </div>
       <Form.Item>
-        {getFieldDecorator("email", {
+        {getFieldDecorator('email', {
           rules: [
             {
-              type: "email",
-              message: "The input is not valid E-mail!"
+              type: 'email',
+              message: 'The input is not valid E-mail!'
             },
             {
               required: true,
-              message: "Please input your E-mail!"
+              message: 'Please input your E-mail!'
             }
           ]
         })(
           <Input
-            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="E-mail"
             name="email"
           />
         )}
       </Form.Item>
       <Form.Item hasFeedback>
-        {getFieldDecorator("password", {
+        {getFieldDecorator('password', {
           rules: [
             {
               required: true,
-              message: "Please input your password!"
+              message: 'Please input your password!'
             },
             {
               validator: validateToNextPassword
@@ -100,18 +100,18 @@ const SignUpBase = props => {
           ]
         })(
           <Input.Password
-            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="Password"
             name="passwordFirst"
           />
         )}
       </Form.Item>
       <Form.Item hasFeedback>
-        {getFieldDecorator("confirm", {
+        {getFieldDecorator('confirm', {
           rules: [
             {
               required: true,
-              message: "Please confirm your password!"
+              message: 'Please confirm your password!'
             },
             {
               validator: compareToFirstPassword
@@ -119,7 +119,7 @@ const SignUpBase = props => {
           ]
         })(
           <Input.Password
-            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="Confirm Password"
             onBlur={handleConfirmBlur}
             name="passwordSecond"
@@ -147,6 +147,6 @@ const SignUpBase = props => {
   );
 };
 
-const SignUp = Form.create({ name: "register" })(SignUpBase);
+const SignUp = Form.create({ name: 'register' })(SignUpBase);
 
 export default withRouter(SignUp);

@@ -4,10 +4,11 @@ import app from "../../config/firebase";
 import { AuthContext } from "./AuthContext";
 import { Typography, Form, Icon, Input, Button } from "antd";
 import "./Login.css";
+
 const { Title, Text } = Typography;
 
 const ForgotPasswordBase = props => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const handleSubmit = useCallback(
     async event => {
@@ -16,7 +17,7 @@ const ForgotPasswordBase = props => {
       try {
         setLoading(true);
         await app.auth().sendPasswordResetEmail(email.value);
-        props.history.push("/");
+        props.history.push('/');
       } catch (error) {
         setMessage(error.message);
       } finally {
@@ -29,7 +30,7 @@ const ForgotPasswordBase = props => {
   const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
-    return <Redirect to="/" />;
+    return <Redirect to="/home" />;
   }
 
   return (
@@ -39,20 +40,20 @@ const ForgotPasswordBase = props => {
         <Text disabled>There is always better solution.</Text>
       </div>
       <Form.Item>
-        {getFieldDecorator("email", {
+        {getFieldDecorator('email', {
           rules: [
             {
-              type: "email",
-              message: "The input is not valid E-mail!"
+              type: 'email',
+              message: 'The input is not valid E-mail!'
             },
             {
               required: true,
-              message: "Please input your E-mail!"
+              message: 'Please input your E-mail!'
             }
           ]
         })(
           <Input
-            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
             placeholder="E-mail"
             name="email"
           />
@@ -78,6 +79,6 @@ const ForgotPasswordBase = props => {
   );
 };
 
-const ForgotPassword = Form.create({ name: "register" })(ForgotPasswordBase);
+const ForgotPassword = Form.create({ name: 'register' })(ForgotPasswordBase);
 
 export default withRouter(ForgotPassword);
