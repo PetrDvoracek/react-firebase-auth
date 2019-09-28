@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from "react";
 import { withRouter, Redirect } from "react-router";
 import app from "../../config/firebase";
 import { AuthContext } from "./AuthContext";
-import { Typography, Form, Icon, Input, Button, Spin } from "antd";
+import { Typography, Form, Icon, Input, Button } from "antd";
 import "./Login.css";
 const { Title, Text } = Typography;
 
@@ -59,15 +59,14 @@ const ForgotPasswordBase = props => {
         )}
       </Form.Item>
       <Form.Item>
-        <Spin spinning={loading}>
           <Button
+            loading={loading}
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
             Reset Password
           </Button>
-        </Spin>
         Or <a href="/login">Sign In</a>
       </Form.Item>
       <Form.Item>

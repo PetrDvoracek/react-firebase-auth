@@ -128,15 +128,14 @@ const SignUpBase = props => {
       </Form.Item>
 
       <Form.Item>
-        <Spin spinning={loading}>
           <Button
+            loading={loading}
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
             Register
           </Button>
-        </Spin>
         Do you already have an account? <a href="/login">Sign In!</a>
       </Form.Item>
       <Form.Item>
