@@ -29,7 +29,8 @@ const Login = ({ history }) => {
         .catch(function (error) {
           setMessage(error.message);
 
-        }).finally(function () {
+        })
+        .finally(function () {
           setLoading(false);
         });
 
@@ -81,14 +82,14 @@ const Login = ({ history }) => {
         <a className="login-form-forgot" href="/forgot-password">
           Forgot password
         </a>
-          <Button
-            loading={loading}
-            type="primary"
-            htmlType="submit"
-            className="login-form-button"
-          >
+        <Button
+          loading={loading}
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+        >
             Log in
-          </Button>
+        </Button>
         Or <a href="/sign-up">register now!</a>
       </Form.Item>
       <Form.Item>
