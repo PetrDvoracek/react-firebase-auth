@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { withRouter, Redirect } from 'react-router';
 import app from '../../config/firebase';
-import { Typography, Form, Icon, Input, Button, Spin } from 'antd';
+import { Typography, Form, Icon, Input, Button } from 'antd';
 import { AuthContext } from './AuthContext';
 import './Login.css';
 
@@ -128,14 +128,14 @@ const SignUpBase = props => {
       </Form.Item>
 
       <Form.Item>
-          <Button
-            loading={loading}
-            type="primary"
-            htmlType="submit"
-            className="login-form-button"
-          >
+        <Button
+          loading={loading}
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+        >
             Register
-          </Button>
+        </Button>
         Do you already have an account? <a href="/login">Sign In!</a>
       </Form.Item>
       <Form.Item>
