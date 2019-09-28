@@ -3,7 +3,7 @@ import './Login.css';
 import { withRouter, Redirect } from 'react-router';
 import app from '../../config/firebase';
 import { AuthContext } from './AuthContext';
-import { Typography, Form, Icon, Input, Button, Checkbox, Spin } from 'antd';
+import { Typography, Form, Icon, Input, Button, Checkbox } from 'antd';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 const { Title, Text } = Typography;

@@ -17,7 +17,7 @@
   ],
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2017
+    "ecmaVersion": 2019
   },
   "rules": {
     "newline-per-chained-call": 1,

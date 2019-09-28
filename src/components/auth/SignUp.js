@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { withRouter, Redirect } from 'react-router';
 import app from '../../config/firebase';
-import { Typography, Form, Icon, Input, Button, Spin } from 'antd';
+import { Typography, Form, Icon, Input, Button } from 'antd';
 import { AuthContext } from './AuthContext';
 import './Login.css';
 
