@@ -19,3 +19,10 @@ REACT_APP_ID=***appId**
 > DO NOT STORE `.env` IN GIT REPO! It contains secret informations.
 
 This is all you have to do to use the template. run `npm install` and `npm start`, go on `http://localhost:3000` in your browser.
+
+## Contribute
+
+Follow the `.eslintrc.json` rules. Check `eslint-plugin-cypress` and `eslint-plugin-react` and install *dev dependencies* 
+```
+npm install --only=dev
+```
