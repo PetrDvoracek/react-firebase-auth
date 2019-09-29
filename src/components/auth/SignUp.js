@@ -26,25 +26,7 @@ const SignUpBase = props => {
         } catch (error) {
           setMessage(error.message);
           setLoading(false);
-
         }
-        // app.auth().createUserWithEmailAndPassword(email.value, passwordFirst.value)
-        //   .then(function sucess(userData) {
-        //     try {
-        //       createNewUser(userData.uid, userData.email, userData.email, 'imagePath');
-        //       props.history.push('/');
-        //     } catch (error) {
-        //       setMessage(error.message);
-        //     }
-        //     setLoading(false);
-        //   }, function (error) {
-        //     setMessage(error.message);
-        //     setLoading(false);
-        //   })
-        //   .catch(function (error) {
-        //     setMessage(error.message);
-        //     setLoading(false);
-        //   });
       } else {
         setMessage('Please confirm your password!');
       }

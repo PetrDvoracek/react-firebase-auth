@@ -20,7 +20,6 @@ const ForgotPasswordBase = props => {
         props.history.push('/');
       } catch (error) {
         setMessage(error.message);
-      } finally {
         setLoading(false);
       }
     },
