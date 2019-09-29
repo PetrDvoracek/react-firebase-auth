@@ -22,12 +22,29 @@ const SignUpBase = props => {
           await app
             .auth()
             .createUserWithEmailAndPassword(email.value, passwordFirst.value);
-          props.history.push('/');
+          props.history.push('/login');
         } catch (error) {
           setMessage(error.message);
-        } finally {
           setLoading(false);
+
         }
+        // app.auth().createUserWithEmailAndPassword(email.value, passwordFirst.value)
+        //   .then(function sucess(userData) {
+        //     try {
+        //       createNewUser(userData.uid, userData.email, userData.email, 'imagePath');
+        //       props.history.push('/');
+        //     } catch (error) {
+        //       setMessage(error.message);
+        //     }
+        //     setLoading(false);
+        //   }, function (error) {
+        //     setMessage(error.message);
+        //     setLoading(false);
+        //   })
+        //   .catch(function (error) {
+        //     setMessage(error.message);
+        //     setLoading(false);
+        //   });
       } else {
         setMessage('Please confirm your password!');
       }
@@ -45,7 +62,7 @@ const SignUpBase = props => {
   const compareToFirstPassword = (rule, value, callback) => {
     const { form } = props;
     if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
+      callback('Passwords are not same!');
     } else {
       callback();
     }
@@ -56,7 +73,7 @@ const SignUpBase = props => {
     setConfirmDirty({ confirmDirty: confirmDirty || !!value });
   };
   const { currentUser } = useContext(AuthContext);
-  if (currentUser) {
+  if (currentUser && !loading) {
     return <Redirect to="/home" />;
   }
   const { getFieldDecorator } = props.form;
