@@ -32,24 +32,10 @@ const Login = ({ history }) => {
         })
         .catch(function (error) {
           setMessage(error.message);
-
-        })
-        .finally(function () {
           setLoading(false);
-        });
 
-      // try {
-      //   setLoading(true);
-      //   app.auth().setPersistence(app.auth.Auth.Persistence.SESSION);
-      //   await app
-      //     .auth()
-      //     .signInWithEmailAndPassword(email.value, password.value);
-      //   history.push('/');
-      // } catch (error) {
-      //   setMessage(error.message);
-      // } finally {
-      //   setLoading(false);
-      // }
+        });
+      
     },
     [history]
   );
