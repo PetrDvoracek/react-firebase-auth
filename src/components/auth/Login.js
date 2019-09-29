@@ -28,7 +28,7 @@ const Login = ({ history }) => {
           return app.auth().signInWithEmailAndPassword(email.value, password.value);
         })
         .then(function () {
-          history.push('/home');
+          history.push(`/${routes.app}`);
         })
         .catch(function (error) {
           setMessage(error.message);
@@ -57,7 +57,7 @@ const Login = ({ history }) => {
   const { currentUser } = useContext(AuthContext);
 
   if (currentUser) {
-    return <Redirect to="/home" />;
+    return <Redirect to={`/${routes.app}`} />;
   }
 
   return (
