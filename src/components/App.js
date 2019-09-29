@@ -8,17 +8,18 @@ import { AuthProvider } from './auth/AuthContext';
 import PrivateRoute from './auth/PrivateRoute';
 import ForgotPassword from './auth/ForgotPassword';
 import Landing from './Landing';
+import * as routes from '../config/routes';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <div>
-          <Route exact path="/" component={Landing} />
-          <PrivateRoute exact path="/home" component={Home} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/sign-up" component={SignUp} />
-          <Route exact path="/forgot-password" component={ForgotPassword} />
+          <Route exact path={ '/' + routes.landing } component={Landing} />
+          <PrivateRoute exact path={ '/' + routes.app} component={Home} />
+          <Route exact path={ '/' + routes.login } component={Login} />
+          <Route exact path={ '/' + routes.register } component={SignUp} />
+          <Route exact path={ '/' + routes.forgotPasswd }  component={ForgotPassword} />
         </div>
       </Router>
     </AuthProvider>

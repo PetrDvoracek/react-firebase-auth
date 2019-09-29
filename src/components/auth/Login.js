@@ -6,7 +6,11 @@ import { AuthContext } from './AuthContext';
 import { Typography, Form, Icon, Input, Button, Checkbox } from 'antd';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { appName } from '../../config/globalNames';
+import * as routes from '../../config/routes';
+
 const { Title, Text } = Typography;
+
 
 const Login = ({ history }) => {
   const [message, setMessage] = useState('');
@@ -59,7 +63,7 @@ const Login = ({ history }) => {
   return (
     <Form onSubmit={handleLogin} className="login-form">
       <div className="login-form-title">
-        <Title>EquipPex</Title>
+        <Title>{ appName }</Title>
         <Text disabled>There is always better solution.</Text>
       </div>
       <Form.Item>
@@ -79,7 +83,7 @@ const Login = ({ history }) => {
       </Form.Item>
       <Form.Item>
         <Checkbox name="rememberUser">Remember me</Checkbox>
-        <a className="login-form-forgot" href="/forgot-password">
+        <a className="login-form-forgot" href={ '/' + routes.forgotPasswd}>
           Forgot password
         </a>
         <Button
@@ -90,7 +94,7 @@ const Login = ({ history }) => {
         >
             Log in
         </Button>
-        Or <a href="/sign-up">register now!</a>
+        Or <a href={ '/' + routes.register }>register now!</a>
       </Form.Item>
       <Form.Item>
         <div className="login-form-message">

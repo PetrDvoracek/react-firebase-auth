@@ -2,8 +2,10 @@ import React, { useCallback, useContext, useState } from 'react';
 import { withRouter, Redirect } from 'react-router';
 import app from '../../config/firebase';
 import { AuthContext } from './AuthContext';
-import { Typography, Form, Icon, Input, Button } from 'antd';
+import {Typography, Form, Icon, Input, Button } from 'antd';
 import './Login.css';
+import { appName } from '../../config/globalNames';
+
 
 const { Title, Text } = Typography;
 
@@ -36,7 +38,7 @@ const ForgotPasswordBase = props => {
   return (
     <Form onSubmit={handleSubmit} className="login-form">
       <div className="login-form-title">
-        <Title>EquipPex</Title>
+        <Title>{ appName }</Title>
         <Text disabled>There is always better solution.</Text>
       </div>
       <Form.Item>
