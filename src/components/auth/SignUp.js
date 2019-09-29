@@ -4,6 +4,9 @@ import app from '../../config/firebase';
 import { Typography, Form, Icon, Input, Button } from 'antd';
 import { AuthContext } from './AuthContext';
 import './Login.css';
+import { appName } from '../../config/globalNames';
+import * as routes from '../../config/routes';
+
 
 const { Title, Text } = Typography;
 
@@ -81,7 +84,7 @@ const SignUpBase = props => {
   return (
     <Form className="login-form" onSubmit={handleSubmit}>
       <div className="login-form-title">
-        <Title>EquipPex</Title>
+        <Title>{ appName }</Title>
         <Text disabled>There is always better solution.</Text>
       </div>
       <Form.Item>
@@ -153,7 +156,7 @@ const SignUpBase = props => {
         >
             Register
         </Button>
-        Do you already have an account? <a href="/login">Sign In!</a>
+        Do you already have an account? <a href={'/' + routes.login}>Sign In!</a>
       </Form.Item>
       <Form.Item>
         <div className="login-form-message">

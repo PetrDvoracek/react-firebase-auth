@@ -1,8 +1,11 @@
 import React from 'react';
 import { Layout, Row, Col, Typography, Divider, Button } from 'antd';
 import './Landing.css';
+import { appName } from '../config/globalNames';
+
 const { Header, Content, Footer } = Layout;
 const { Text, Title } = Typography;
+
 
 export default function Landing() {
   return (
@@ -14,7 +17,7 @@ export default function Landing() {
             <Col span={8} >
 
               <Title level={2}>
-                EquipPex
+                { appName }
               </Title>
 
             </Col>
@@ -24,9 +27,9 @@ export default function Landing() {
         </Header>
         <Content className="landing">
           <Divider />
-          <Text disabled className="landing-header-clever-text">The only solution you need to manage your equipment.</Text>
+          <Text disabled className="landing-header-clever-text">The only App you need to App.</Text>
         </Content>
-        <Footer className="landing">powered by profiq</Footer>
+        <Footer className="landing">powered by clever man</Footer>
       </Layout >
     </>
   );
