@@ -8,11 +8,13 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import { appName } from '../../config/globalNames';
 import * as routes from '../../config/routes';
+import { connect } from 'react-redux';
+import { login } from '../../store/actions/authActions';
 
 const { Title, Text } = Typography;
 
 
-const Login = ({ history }) => {
+const Login = (props) => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -26,9 +28,11 @@ const Login = ({ history }) => {
         .then(function () {
           setLoading(true);
           return app.auth().signInWithEmailAndPassword(email.value, password.value);
+
+          //return props.login(email.value, password.value);
         })
         .then(function () {
-          history.push(`/${routes.app}`);
+          props.history.push(`/${routes.app}`);
         })
         .catch(function (error) {
           setMessage(error.message);
@@ -37,7 +41,7 @@ const Login = ({ history }) => {
         });
       
     },
-    [history]
+    [props.history]
   );
 
   const { currentUser } = useContext(AuthContext);
@@ -91,4 +95,10 @@ const Login = ({ history }) => {
   );
 };
 
-export default withRouter(Login);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (email, password) => dispatch(login(email, password))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(withRouter(Login));

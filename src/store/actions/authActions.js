@@ -1,11 +1,12 @@
-export const createProject = (project) => {
+import app from '../../config/firebase';
+
+export const login = (email, password) => {
   return (dispatch, getState) => {
-    // make async call
+
+    app.auth().signInWithEmailAndPassword(email, password);
     dispatch(  {
-      type: 'ADD_PROJECT',
-      project: project
+      type: 'LOGIN',
+      email: email
     });
   };
-
-
 };
