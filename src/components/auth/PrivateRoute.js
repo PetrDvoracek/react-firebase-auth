@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
+import { connect } from 'react-redux';
 
 const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
   const { currentUser } = useContext(AuthContext);
@@ -18,4 +19,11 @@ const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
   );
 };
 
-export default PrivateRoute;
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+
+  };
+};
+
+export default connect(mapStateToProps)(PrivateRoute);

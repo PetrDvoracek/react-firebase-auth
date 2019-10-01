@@ -27,9 +27,9 @@ const Login = (props) => {
       app.auth().setPersistence(firebasePersistence)
         .then(function () {
           setLoading(true);
-          return app.auth().signInWithEmailAndPassword(email.value, password.value);
+          //return app.auth().signInWithEmailAndPassword(email.value, password.value);
 
-          //return props.login(email.value, password.value);
+          return props.login({email: email.value, password: password.value});
         })
         .then(function () {
           props.history.push(`/${routes.app}`);
@@ -50,6 +50,7 @@ const Login = (props) => {
     return <Redirect to={`/${routes.app}`} />;
   }
 
+  const { authError } = props;
   return (
     <Form onSubmit={handleLogin} className="login-form">
       <div className="login-form-title">
@@ -88,17 +89,25 @@ const Login = (props) => {
       </Form.Item>
       <Form.Item>
         <div className="login-form-message">
-          <Text type="danger">{message}</Text>
+
+          { authError ? <Text type="danger">{authError}</Text>: null }
+
         </div>
       </Form.Item>
     </Form>
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    login: (email, password) => dispatch(login(email, password))
+    authError: state.auth.authError
   };
 };
 
-export default connect(null, mapDispatchToProps)(withRouter(Login));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (creds) => dispatch(login(creds)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
