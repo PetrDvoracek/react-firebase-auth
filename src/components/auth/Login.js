@@ -9,15 +9,12 @@ import 'firebase/auth';
 import { appName } from '../../config/globalNames';
 import * as routes from '../../config/routes';
 import { connect } from 'react-redux';
-import { login } from '../../store/actions/authActions';
-import { setLoading } from '../../store/actions/appAction';
+import { login, setLoading, setError } from '../../store/actions/authActions';
 
 const { Title, Text } = Typography;
 
 
 const LoginBase = (props) => {
-  const [message, setMessage] = useState('');
-  //const [loading, setLoading] = useState(false);
 
   const handleLogin = useCallback(
     async event => {
@@ -30,10 +27,10 @@ const LoginBase = (props) => {
           return props.login({email: email.value, password: password.value});
         })
         .then(function () {
-          props.history.push(`/${routes.app}`);
+          //props.history.push(`/${routes.app}`);
         })
         .catch(function (error) {
-          setMessage(error.message);
+          setError(error.message);
           props.setLoading(false);
         });
     },
@@ -46,7 +43,6 @@ const LoginBase = (props) => {
     return <Redirect to={`/${routes.app}`} />;
   }
 
-  const { authError } = props;
   const { getFieldDecorator } = props.form;
 
   return (
@@ -101,7 +97,7 @@ const LoginBase = (props) => {
       <Form.Item>
         <div className="login-form-message">
 
-          { authError ? <Text type="danger">{authError}</Text>: null }
+          { props.authError ? <Text type="danger">{props.authError}</Text>: null }
 
         </div>
       </Form.Item>
@@ -112,14 +108,15 @@ const LoginBase = (props) => {
 const mapStateToProps = (state) => {
   return {
     authError: state.auth.authError,
-    loading: state.app.loading
+    loading: state.auth.loading
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (creds) => dispatch(login(creds)),
-    setLoading: (value) => dispatch(setLoading(value))
+    setLoading: (value) => dispatch(setLoading(value)),
+    setError: (message) => dispatch(setError(message)),
   };
 };
 

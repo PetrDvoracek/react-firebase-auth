@@ -6,6 +6,8 @@ import { AuthContext } from './AuthContext';
 import './Login.css';
 import { appName } from '../../config/globalNames';
 import * as routes from '../../config/routes';
+import {connect} from 'react-redux';
+import {setError, setLoading} from '../../store/actions/authActions';
 
 
 const { Title, Text } = Typography;
@@ -149,6 +151,20 @@ const SignUpBase = props => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    error: state.auth.authError,
+    loading: state.auth.loading
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setLoading: (value) => dispatch(setLoading(value)),
+    setError: (message) => dispatch(setError(message)),
+  };
+};
+
 const SignUp = Form.create({ name: 'register' })(SignUpBase);
 
-export default withRouter(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SignUp));
