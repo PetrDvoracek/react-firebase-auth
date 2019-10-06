@@ -1,6 +1,5 @@
 const initState = {
   authError: null,
-  loading: false
 };
 
 const authReducer = (state = initState, action) => {
@@ -18,23 +17,9 @@ const authReducer = (state = initState, action) => {
       ...state,
       authError: 'Login Failed'
     };
-  case 'SET_LOADING_TRUE':
-    return {
-      ...state,
-      loading: true,
-    };
-  case 'SET_LOADING_FALSE':
-    return {
-      ...state,
-      loading: false
-    };
   default:
-    console.log(`unknown case for authReducer: ${action.type}` );
     return state;
-
-
   }
-  return state;
 };
 
 export default authReducer;

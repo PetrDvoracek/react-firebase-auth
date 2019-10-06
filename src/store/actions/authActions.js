@@ -1,4 +1,6 @@
 import app from '../../config/firebase';
+import {setLoading} from './appAction';
+
 
 export const login = (credentials) => {
   return (dispatch, getState) => {
@@ -24,19 +26,5 @@ export const login = (credentials) => {
         });
       });
 
-  };
-};
-
-export const setLoading = (value) => {
-  return (dispatch, getState) => {
-    if(value === true) {
-      dispatch({
-        type: 'SET_LOADING_TRUE'
-      });
-    } else {
-      dispatch({
-        type: 'SET_LOADING_FALSE'
-      });
-    }
   };
 };

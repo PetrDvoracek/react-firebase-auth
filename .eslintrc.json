@@ -38,6 +38,10 @@
       "error",
       "always"
     ],
+    "padded-blocks": [
+      "warn",
+      "never"
+    ],
     "space-in-brackets": ["error", "always"]
   }
 }

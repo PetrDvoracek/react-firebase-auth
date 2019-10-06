@@ -9,7 +9,8 @@ import 'firebase/auth';
 import { appName } from '../../config/globalNames';
 import * as routes from '../../config/routes';
 import { connect } from 'react-redux';
-import { login, setLoading } from '../../store/actions/authActions';
+import { login } from '../../store/actions/authActions';
+import { setLoading } from '../../store/actions/appAction';
 
 const { Title, Text } = Typography;
 
@@ -26,8 +27,6 @@ const LoginBase = (props) => {
 
       app.auth().setPersistence(firebasePersistence)
         .then(function () {
-          //return app.auth().signInWithEmailAndPassword(email.value, password.value);
-
           return props.login({email: email.value, password: password.value});
         })
         .then(function () {
@@ -36,9 +35,7 @@ const LoginBase = (props) => {
         .catch(function (error) {
           setMessage(error.message);
           props.setLoading(false);
-
         });
-      
     },
     [props.history]
   );
@@ -115,7 +112,7 @@ const LoginBase = (props) => {
 const mapStateToProps = (state) => {
   return {
     authError: state.auth.authError,
-    loading: state.auth.loading
+    loading: state.app.loading
   };
 };
 
