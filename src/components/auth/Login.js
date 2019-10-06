@@ -9,14 +9,14 @@ import 'firebase/auth';
 import { appName } from '../../config/globalNames';
 import * as routes from '../../config/routes';
 import { connect } from 'react-redux';
-import { login } from '../../store/actions/authActions';
+import { login, setLoading } from '../../store/actions/authActions';
 
 const { Title, Text } = Typography;
 
 
-const Login = (props) => {
+const LoginBase = (props) => {
   const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
 
   const handleLogin = useCallback(
     async event => {
@@ -26,7 +26,6 @@ const Login = (props) => {
 
       app.auth().setPersistence(firebasePersistence)
         .then(function () {
-          setLoading(true);
           //return app.auth().signInWithEmailAndPassword(email.value, password.value);
 
           return props.login({email: email.value, password: password.value});
@@ -36,7 +35,7 @@ const Login = (props) => {
         })
         .catch(function (error) {
           setMessage(error.message);
-          setLoading(false);
+          props.setLoading(false);
 
         });
       
@@ -51,6 +50,8 @@ const Login = (props) => {
   }
 
   const { authError } = props;
+  const { getFieldDecorator } = props.form;
+
   return (
     <Form onSubmit={handleLogin} className="login-form">
       <div className="login-form-title">
@@ -58,11 +59,24 @@ const Login = (props) => {
         <Text disabled>There is always better solution.</Text>
       </div>
       <Form.Item>
-        <Input
-          prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-          placeholder="Username"
-          name="email"
-        />
+        {getFieldDecorator('email', {
+          rules: [
+            {
+              type: 'email',
+              message: 'The input is not valid E-mail!'
+            },
+            {
+              required: true,
+              message: 'Please input your E-mail!'
+            }
+          ]
+        })(
+          <Input
+            prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            placeholder="Username"
+            name="email"
+          />
+        )}
       </Form.Item>
       <Form.Item>
         <Input
@@ -78,7 +92,7 @@ const Login = (props) => {
           Forgot password
         </a>
         <Button
-          loading={loading}
+          loading={props.loading}
           type="primary"
           htmlType="submit"
           className="login-form-button"
@@ -100,14 +114,19 @@ const Login = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    authError: state.auth.authError
+    authError: state.auth.authError,
+    loading: state.auth.loading
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     login: (creds) => dispatch(login(creds)),
+    setLoading: (value) => dispatch(setLoading(value))
   };
 };
+
+const Login = Form.create({ name: 'register' })(LoginBase);
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
